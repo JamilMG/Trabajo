@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+
+</head>
+<body>
+
+	<nav class="navbar navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
+      Mediclinic
+    </a>
+  </div>
+</nav>
+
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6">
+				<div class="form-group">
+					<a th:href="@{/pacientes/nuevo}"
+						style="display: inline-block; padding: 10px 20px; background-color: cyan; color: #000; text-decoration: none; border-radius: 4px; font-weight: bold;">
+						Nuevo Paciente +</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<br>
+
+	<main role="main" class="col-md-10 ml-sm-auto col-lg-10 px-4 mx-auto text-center">
+		<div class="container text-center" id="pas">
+			<table class="table">
+				<thead class="thead-success">
+					<tr>
+						<th scope="col">Item</th>
+						<th scope="col">Nombre</th>
+						<th scope="col">Apellido</th>
+						<th scope="col">Telefono</th>
+						<th scope="col">Direccion</th>
+						<th scope="col">Acciones</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="pa,i:${pacientes}">
+						<th th:text="${i.count}"></th>
+						<td th:text="${pa.nombre}"></td>
+						<td th:text="${pa.apellido}"></td>
+						<td th:text="${pa.telefono}"></td>
+						<td th:text="${pa.direccion}"></td>
+						<td>
+							<a class="btn btn-info" th:href="@{'/pacientes/editar/' + ${pa.id}}">Editar</a>
+							&nbsp;
+							<a class="btn btn-danger" th:href="@{'/pacientes/delete/' + ${pa.id}}"
+								onclick="return confirm('¿Desea Eliminar el Paciente?')">Eliminar</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</main>
+
+	
+	<div aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        <li class="page-item" th:classappend="${pacientes.number == 0 ? 'disabled' : ''}">
+            <a class="page-link" th:href="${paginacion}+'?page='+${pacientes.number - 1}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;Anterior</span>
+            </a>
+        </li>
+
+        <li th:classappend="${i eq pacientes.number + 1} ? 'page-item active'" th:each="i : ${#numbers.sequence(1, pacientes.totalPages, 1)}">
+            <a class="page-link" th:href="${paginacion}+'?page='+${i-1}" th:text="${i}"></a>
+        </li>
+
+        <li class="page-item" th:classappend="${pacientes.number == (pacientes.totalPages - 1) ? 'disabled' : ''}">
+            <a class="page-link" th:href="${paginacion}+'?page='+${pacientes.number + 1}" aria-label="Next">
+                <span aria-hidden="true">Siguiente&raquo;</span>
+            </a>
+        </li>	
+    </ul>
+</div>
+
+
+</body>
+
+
+</html>
